@@ -17,7 +17,7 @@ db=SQLAlchemy(app)
 class Requisicao(db.Model):
     _tablename_= "requisicao"
 
-    id_req = db.Column(db.Integer, primary_key=True)
+    id_rek = db.Column(db.Integer, primary_key=True)
     valor = db.Column(db.Float)
 
 class UltimaRequisicao(db.Model):
