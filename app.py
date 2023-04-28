@@ -119,7 +119,7 @@ def clima():
             return jsonify({'message': 'Falha ao enviar'})
 
     if request.method == "GET":
-        return render_template('index.html', dados=Clima.query.order_by(Clima.id_clima).limit(40).all())
+        return render_template('index.html', dados=Clima.query.order_by(Clima.id_clima.desc()).limit(40).all())
 
 
 if __name__ == "main":
