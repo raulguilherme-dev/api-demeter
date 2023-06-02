@@ -122,5 +122,11 @@ def clima():
         return render_template('index.html', dados=Clima.query.order_by(Clima.id_clima.desc()).limit(40).all())
 
 
+@app.route('/getClima', methods=['GET'])
+def getClima():
+    if request.method == "GET":
+        resposta = Clima.query.order_by(Clima.id_clima.desc()).limit(1).first()
+        return jsonify({'temperatura': resposta.temperatura, 'umidade': resposta.umidade})
+        
 if __name__ == "main":
     app.run(debug=True)
