@@ -157,7 +157,7 @@ def reqCultura():
     if request.method == "GET":
         querry = CulturaReq.query.order_by(CulturaReq.id_cultura_req.desc()).limit(1).first()
         print(querry)
-        return jsonify({'tipo': querry.tipo, 'valor': querry.valor, 'horario': querry.horario})
+        return jsonify({'tipo': querry.tipo, 'valor': querry.valor, 'horario': str(querry.horario)})
 
 
 if __name__ == "main":
