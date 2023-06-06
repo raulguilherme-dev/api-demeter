@@ -153,6 +153,10 @@ def reqCultura():
             print(e)
             db.session.rollback()
             return jsonify({'message': 'Falha ao enviar'})
+        
+    if request.method == "GET":
+        querry = CulturaReq.query.order_by(CulturaReq.id_clima.desc()).limit(1).first()
+        return jsonify({'tipo': querry.tipo, 'valor': querry.valor, 'horario': querry.horario})
 
 
 if __name__ == "main":
