@@ -45,12 +45,21 @@ class Clima(db.Model):
         self.umidade = umidade
         self.horario = horario
 
+class CulturaReq(db.Model):
+    _tablename_ = "requisicao_cultura"
+
+    id_cultura_req = db.Column(db.Integer, primary_key=True)
+    valor = db.Column(db.Float, nullable=False)
+    tipo = db.Column(db.String(20), nullable=False)
+    horario = db.Column(db.Time, nullable=False)
+
+    def __init__(self, valor, tipo, horario):
+        self.valor = valor
+        self.tipo = tipo
+        self.horario = horario
+
 with app.app_context():
     db.create_all()
-
-@app.route('/', methods=['GET'])
-def teste():
-    return 'OI'
 
 @app.route('/req', methods=['GET', 'POST'])
 def get():
@@ -127,6 +136,24 @@ def getClima():
     if request.method == "GET":
         resposta = Clima.query.order_by(Clima.id_clima.desc()).limit(1).first()
         return jsonify({'temperatura': resposta.temperatura, 'umidade': resposta.umidade})
-        
+    
+@app.route('/reqCultura', methods=['POST', 'GET'])
+def reqCultura():
+    if request.method == "POST":
+        json = request.get_json()
+        print(json)
+        try:
+            horario_str = json['horario']
+            horario = datetime.strptime(horario_str, '%H:%M').time()
+            dados = CulturaReq(json['valor'], json['tipo'], json['time'], horario)
+            db.session.add(dados)
+            db.session.commit()
+            return jsonify({'message': 'Enviado com sucesso'})
+        except Exception as e:
+            print(e)
+            db.session.rollback()
+            return jsonify({'message': 'Falha ao enviar'})
+
+
 if __name__ == "main":
     app.run(debug=True)
