@@ -145,7 +145,7 @@ def reqCultura():
         try:
             horario_str = json['horario']
             horario = datetime.strptime(horario_str, '%H:%M').time()
-            dados = CulturaReq(json['valor'], json['tipo'], json['time'], horario)
+            dados = CulturaReq(json['valor'], json['tipo'], horario)
             db.session.add(dados)
             db.session.commit()
             return jsonify({'message': 'Enviado com sucesso'})
