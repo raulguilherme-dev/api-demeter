@@ -155,7 +155,7 @@ def reqCultura():
             return jsonify({'message': 'Falha ao enviar'})
         
     if request.method == "GET":
-        querry = CulturaReq.query.order_by(CulturaReq.id_clima.desc()).limit(1).first()
+        querry = CulturaReq.query.order_by(CulturaReq.id_cultura_req.desc()).limit(1).first()
         return jsonify({'tipo': querry.tipo, 'valor': querry.valor, 'horario': querry.horario})
 
 
