@@ -7,6 +7,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+def is_number(string):
+    if string.replace(".", "").isnumeric():
+        return True
+    else:
+        return False
+
 app = Flask(__name__)
 app.config['SECRET_KEY']='secret'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -116,8 +122,7 @@ def clima():
     if request.method == "POST":
         json = request.get_json()
         print(json)
-        if str(json['temperatura']).isnumeric() and str(json['umidade']).isnumeric():
-            print('OI')
+        if is_number(str(json['temperatura'])) and is_number(str(json['umidade'])):
             try:
                 dados = Clima(json['temperatura'], json['umidade'], datetime.now())
                 db.session.add(dados)
