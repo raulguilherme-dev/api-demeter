@@ -116,16 +116,19 @@ def clima():
     if request.method == "POST":
         json = request.get_json()
         print(json)
-        try:
-            dados = Clima(json['temperatura'], json['umidade'], datetime.now())
-            db.session.add(dados)
-            db.session.commit()
-            return jsonify({'message': 'Enviado com sucesso'})
-        
-        except Exception as e:
-            print(e)
-            db.session.rollback()
-            return jsonify({'message': 'Falha ao enviar'})
+        if json['temperatura'].isnumeric() and json['umidade'].isnumeric():
+            try:
+                dados = Clima(json['temperatura'], json['umidade'], datetime.now())
+                db.session.add(dados)
+                db.session.commit()
+                return jsonify({'message': 'Enviado com sucesso'})
+            
+            except Exception as e:
+                print(e)
+                db.session.rollback()
+                return jsonify({'message': 'Falha ao enviar'})
+        else:
+            return jsonify({'message': 'Dados não compatíveis'})
 
     if request.method == "GET":
         return render_template('index.html', dados=Clima.query.order_by(Clima.id_clima.desc()).limit(40).all())
