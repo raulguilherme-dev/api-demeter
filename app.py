@@ -116,7 +116,8 @@ def clima():
     if request.method == "POST":
         json = request.get_json()
         print(json)
-        if json['temperatura'].isnumeric() and json['umidade'].isnumeric():
+        if str(json['temperatura']).isnumeric() and str(json['umidade']).isnumeric():
+            print('OI')
             try:
                 dados = Clima(json['temperatura'], json['umidade'], datetime.now())
                 db.session.add(dados)
