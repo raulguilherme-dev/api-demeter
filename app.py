@@ -123,7 +123,7 @@ def clima():
         json = request.get_json()
         print(json)
         if is_number(str(json['temperatura'])) and is_number(str(json['umidade'])):
-            if json['temperatura'] > 100 or json['umidade'] > 100:
+            if json['temperatura'] < 100 and json['umidade'] < 100:
                 try:
                     dados = Clima(json['temperatura'], json['umidade'], datetime.now())
                     db.session.add(dados)
