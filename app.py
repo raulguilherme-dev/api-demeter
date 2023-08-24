@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import JSON
 from datetime import datetime
+from pytz import timezone
 import os
 from dotenv import load_dotenv
 
@@ -12,6 +13,8 @@ def is_number(string):
         return True
     else:
         return False
+    
+fuso_horario = timezone('America/Sao_Paulo')
 
 app = Flask(__name__)
 app.config['SECRET_KEY']='secret'
@@ -125,7 +128,7 @@ def clima():
         if is_number(str(json['temperatura'])) and is_number(str(json['umidade'])):
             if json['temperatura'] < 100 and json['umidade'] < 100:
                 try:
-                    dados = Clima(json['temperatura'], json['umidade'], datetime.now())
+                    dados = Clima(json['temperatura'], json['umidade'], datetime.now(fuso_horario))
                     db.session.add(dados)
                     db.session.commit()
                     return jsonify({'message': 'Enviado com sucesso'})
